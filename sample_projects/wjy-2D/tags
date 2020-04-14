@@ -1,0 +1,61 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/e0a976d7/
+ALL_OBJECTS	Makefile	/^ALL_OBJECTS := $(PhysiCell_OBJECTS) $(PhysiCell_custom_module_OBJECTS)$/;"	m
+ARCH	Makefile	/^ARCH := native # best auto-tuning$/;"	m
+BioFVM_MultiCellDS.o	Makefile	/^BioFVM_MultiCellDS.o: .\/BioFVM\/BioFVM_MultiCellDS.cpp$/;"	t
+BioFVM_OBJECTS	Makefile	/^BioFVM_OBJECTS := BioFVM_vector.o BioFVM_mesh.o BioFVM_microenvironment.o BioFVM_solvers.o BioFV/;"	m
+BioFVM_agent_container.o	Makefile	/^BioFVM_agent_container.o: .\/BioFVM\/BioFVM_agent_container.cpp$/;"	t
+BioFVM_basic_agent.o	Makefile	/^BioFVM_basic_agent.o: .\/BioFVM\/BioFVM_basic_agent.cpp$/;"	t
+BioFVM_matlab.o	Makefile	/^BioFVM_matlab.o: .\/BioFVM\/BioFVM_matlab.cpp$/;"	t
+BioFVM_mesh.o	Makefile	/^BioFVM_mesh.o: .\/BioFVM\/BioFVM_mesh.cpp$/;"	t
+BioFVM_microenvironment.o	Makefile	/^BioFVM_microenvironment.o: .\/BioFVM\/BioFVM_microenvironment.cpp$/;"	t
+BioFVM_solvers.o	Makefile	/^BioFVM_solvers.o: .\/BioFVM\/BioFVM_solvers.cpp$/;"	t
+BioFVM_utilities.o	Makefile	/^BioFVM_utilities.o: .\/BioFVM\/BioFVM_utilities.cpp$/;"	t
+BioFVM_vector.o	Makefile	/^BioFVM_vector.o: .\/BioFVM\/BioFVM_vector.cpp$/;"	t
+CC	Makefile	/^CC := g++$/;"	m
+CFLAGS	Makefile	/^CFLAGS := -march=$(ARCH) -O3 -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11$/;"	m
+COMPILE_COMMAND	Makefile	/^COMPILE_COMMAND := $(CC) $(CFLAGS) $/;"	m
+PROGRAM_NAME	Makefile	/^PROGRAM_NAME := wjy-2D$/;"	m
+PhysiCell_MultiCellDS.o	Makefile	/^PhysiCell_MultiCellDS.o: .\/modules\/PhysiCell_MultiCellDS.cpp$/;"	t
+PhysiCell_OBJECTS	Makefile	/^PhysiCell_OBJECTS := $(BioFVM_OBJECTS)  $(pugixml_OBJECTS) $(PhysiCell_core_OBJECTS) $(PhysiCell/;"	m
+PhysiCell_SVG.o	Makefile	/^PhysiCell_SVG.o: .\/modules\/PhysiCell_SVG.cpp$/;"	t
+PhysiCell_cell.o	Makefile	/^PhysiCell_cell.o: .\/core\/PhysiCell_cell.cpp$/;"	t
+PhysiCell_cell_container.o	Makefile	/^PhysiCell_cell_container.o: .\/core\/PhysiCell_cell_container.cpp$/;"	t
+PhysiCell_constants.o	Makefile	/^PhysiCell_constants.o: .\/core\/PhysiCell_constants.cpp$/;"	t
+PhysiCell_core_OBJECTS	Makefile	/^PhysiCell_core_OBJECTS := PhysiCell_phenotype.o PhysiCell_cell_container.o PhysiCell_standard_mo/;"	m
+PhysiCell_custom.o	Makefile	/^PhysiCell_custom.o: .\/core\/PhysiCell_custom.cpp$/;"	t
+PhysiCell_custom_module_OBJECTS	Makefile	/^PhysiCell_custom_module_OBJECTS := custom.o$/;"	m
+PhysiCell_digital_cell_line.o	Makefile	/^PhysiCell_digital_cell_line.o: .\/core\/PhysiCell_digital_cell_line.cpp$/;"	t
+PhysiCell_module_OBJECTS	Makefile	/^PhysiCell_module_OBJECTS := PhysiCell_SVG.o PhysiCell_pathology.o PhysiCell_MultiCellDS.o PhysiC/;"	m
+PhysiCell_pathology.o	Makefile	/^PhysiCell_pathology.o: .\/modules\/PhysiCell_pathology.cpp$/;"	t
+PhysiCell_phenotype.o	Makefile	/^PhysiCell_phenotype.o: .\/core\/PhysiCell_phenotype.cpp$/;"	t
+PhysiCell_pugixml.o	Makefile	/^PhysiCell_pugixml.o: .\/modules\/PhysiCell_pugixml.cpp$/;"	t
+PhysiCell_settings.o	Makefile	/^PhysiCell_settings.o: .\/modules\/PhysiCell_settings.cpp$/;"	t
+PhysiCell_standard_models.o	Makefile	/^PhysiCell_standard_models.o: .\/core\/PhysiCell_standard_models.cpp$/;"	t
+PhysiCell_utilities.o	Makefile	/^PhysiCell_utilities.o: .\/core\/PhysiCell_utilities.cpp$/;"	t
+PhysiCell_various_outputs.o	Makefile	/^PhysiCell_various_outputs.o: .\/modules\/PhysiCell_various_outputs.cpp$/;"	t
+VERSION	Makefile	/^VERSION := $(shell grep . VERSION.txt | cut -f1 -d:)$/;"	m
+all	Makefile	/^all: main.cpp $(ALL_OBJECTS)$/;"	t
+checkpoint	Makefile	/^checkpoint: $/;"	t
+clean	Makefile	/^clean:$/;"	t
+create_cell_types	custom_modules/custom.cpp	/^void create_cell_types( void )$/;"	f	typeref:typename:void
+custom.o	Makefile	/^custom.o: .\/custom_modules\/custom.cpp $/;"	t
+data-cleanup	Makefile	/^data-cleanup:$/;"	t
+main	main-wjy-2D.cpp	/^int main( int argc, char* argv[] )$/;"	f	typeref:typename:int
+motile_cell	custom_modules/custom.cpp	/^Cell_Definition motile_cell; $/;"	v	typeref:typename:Cell_Definition
+my_coloring_function	custom_modules/custom.cpp	/^std::vector<std::string> my_coloring_function( Cell* pCell )$/;"	f	typeref:typename:std::vector<std::string>
+pugixml.o	Makefile	/^pugixml.o: .\/BioFVM\/pugixml.cpp$/;"	t
+pugixml_OBJECTS	Makefile	/^pugixml_OBJECTS := pugixml.o$/;"	m
+reset	Makefile	/^reset:$/;"	t
+setup_microenvironment	custom_modules/custom.cpp	/^void setup_microenvironment( void )$/;"	f	typeref:typename:void
+setup_tissue	custom_modules/custom.cpp	/^void setup_tissue( void )$/;"	f	typeref:typename:void
+tar	Makefile	/^tar:$/;"	t
+untar	Makefile	/^untar: $/;"	t
+unzip	Makefile	/^unzip: $/;"	t
+zip	Makefile	/^zip:$/;"	t

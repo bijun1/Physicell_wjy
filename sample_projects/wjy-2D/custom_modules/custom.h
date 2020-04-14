@@ -65,71 +65,28 @@
 ###############################################################################
 */
 
-#ifndef __PhysiCell_standard_models_h__
-#define __PhysiCell_standard_models_h__
+#include "../core/PhysiCell.h"
+#include "../modules/PhysiCell_standard_modules.h" 
 
-#include "./PhysiCell_constants.h" 
-#include "./PhysiCell_phenotype.h" 
+using namespace BioFVM; 
+using namespace PhysiCell;
 
-namespace PhysiCell
-{
+void tumor_cell_phenotype_with_oncoprotein( Cell* pCell, Phenotype& phenotype, double dt ); 
 
-// standard cycle models: 
+// any additional cell types (beyond cell_defaults)
 
-extern Cycle_Model Ki67_advanced, Ki67_basic, live, flow_cytometry_cycle_model, flow_cytometry_separated_cycle_model, cycling_quiescent; 
-extern Cycle_Model apoptosis, necrosis; 
-extern Death_Parameters apoptosis_parameters, necrosis_parameters; 
+extern Cell_Definition motile_cell; 
 
+// custom cell phenotype functions could go here 
 
-extern bool PhysiCell_standard_models_initialized; 
-extern bool PhysiCell_standard_death_models_initialized; 
-extern bool PhysiCell_standard_cycle_models_initialized; 
+// setup functions to help us along 
 
-// standard entry function for the cycle models 
+void create_cell_types( void );
+void setup_tissue( void ); 
 
-void standard_Ki67_positive_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-void standard_Ki67_negative_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-void standard_live_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
+// set up the BioFVM microenvironment 
+void setup_microenvironment( void ); 
 
-void G1_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); 
-void G0_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); 
-void S_phase_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
+// custom pathology coloring function 
 
-void standard_apoptosis_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-void standard_necrosis_entry_function( Cell* pCell, Phenotype& phenotype, double dt );  // done 
-void standard_lysis_entry_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-
-bool standard_necrosis_arrest_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-
-// standard volume functions 
-
-void standard_volume_update_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-
-// standard mechanics functions 
-
-void standard_update_cell_velocity( Cell* pCell, Phenotype& phenotype, double dt); // done 
-void standard_add_basement_membrane_interactions( Cell* pCell, Phenotype phenotype, double dt );
-
-// other standard functions 
-
-void empty_function( Cell* pCell, Phenotype& phenotype, double dt ); // done 
-void up_orientation( Cell* pCell, Phenotype& phenotype, double dt ); // done
-
-// Wjy defined update func.
-void wjy_update( Cell* pCell, Phenotype& phenotype, double dt ); 
-
-// standard o2-based phenotype changes 
-
-void update_cell_and_death_parameters_O2_based( Cell* pCell, Phenotype& phenotype, double dt ); 
-
-// create standard models 
-
-bool create_standard_cell_cycle_models( void ); // done 
-bool create_standard_cell_death_models( void ); // done 
-bool create_standard_cycle_and_death_models( void ); // done 
-
-void initialize_default_cell_definition( void ); // done 
-	
-};
-
-#endif 
+std::vector<std::string> my_coloring_function( Cell* );

@@ -699,6 +699,12 @@ void initialize_default_cell_definition( void )
 	return; 	
 }
 
+void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
+	update_cell_and_death_parameters_O2_based(pcell, phenotype, dt);
+	//printf("\n Cell %d 	birth_time  %f		age %f.",
+	//	       	pcell->ID, pcell->birth_time, PhysiCell_globals.current_time - pcell->birth_time);
+}
+
 void update_cell_and_death_parameters_O2_based( Cell* pCell, Phenotype& phenotype, double dt )
 {
 	// supported cycle models:
