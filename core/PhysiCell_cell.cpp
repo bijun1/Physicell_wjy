@@ -781,6 +781,9 @@ Cell* create_cell( void )
 {
 	Cell* pNew; 
 	pNew = new Cell;		
+        
+	// Create time.
+	pNew->birth_time = PhysiCell_globals.current_time; 
 	(*all_cells).push_back( pNew ); 
 	pNew->index=(*all_cells).size()-1;
 	
