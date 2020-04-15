@@ -67,6 +67,7 @@
 
 #include "PhysiCell_standard_models.h" 
 #include "PhysiCell_cell.h" 
+#include "PhysiCell_utilities.h"
 
 namespace PhysiCell{
 	
@@ -77,6 +78,21 @@ bool PhysiCell_standard_cycle_models_initialized = false;
 Cycle_Model Ki67_advanced, Ki67_basic, live, apoptosis, necrosis; 
 Cycle_Model cycling_quiescent; 
 Death_Parameters apoptosis_parameters, necrosis_parameters; 
+
+// wjy defined
+double wjy_beta = 1;
+double wjy_alpha = 2;
+double wjy_gamma = 2;
+double wjy_rengp = 0.6;
+double wjy_rengpp = -0.8;
+double wjy_rengpf = -0.2;
+double wjy_gmi = 2;
+double wjy_gme = 2;
+double wjy_rea = 1;
+double wjy_ria = 1;
+double wjy_energy = 5;
+// end
+
 
 // new cycle models:
 
@@ -687,6 +703,7 @@ void initialize_default_cell_definition( void )
 	cell_defaults.functions.set_orientation = NULL;
 
 	// add the standard death models to the default phenotype. 
+	//cell_defaults.phenotype.death.add_death_model( 0.00319/60.0 , &apoptosis , apoptosis_parameters );
 	cell_defaults.phenotype.death.add_death_model( 0.00319/60.0 , &apoptosis , apoptosis_parameters );
 		// MCF10A, to get a 2% apoptotic index 
 	cell_defaults.phenotype.death.add_death_model( 0.0 , &necrosis , necrosis_parameters );
@@ -703,6 +720,21 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	update_cell_and_death_parameters_O2_based(pcell, phenotype, dt);
 	//printf("\n Cell %d 	birth_time  %f		age %f.",
 	//	       	pcell->ID, pcell->birth_time, PhysiCell_globals.current_time - pcell->birth_time);
+	double fi = (-wjy_beta * wjy_rengp - wjy_alpha * wjy_rengpf * pcell->pf)  * wjy_energy;
+	double fe = (-wjy_gamma * pcell->pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pcell->pf) * wjy_energy;
+	pcell->pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
+	pcell->pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
+	pcell->pi = (0 <= pcell->pi && pcell->pi <=1) ? pcell->pi : 0.4;
+	pcell->pe = (0 <= pcell->pe && pcell->pe <=1) ? pcell->pe : 0.4;
+	pcell->pf = 1 - pcell->pi - pcell->pe;
+
+
+        // apoptosis.
+	double apoptosis_rate = pcell->pe * diffusion_dt;
+	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
+	// Set apoptosis to zero 
+	phenotype.death.rates[apoptosis_model_index] =apoptosis_rate/100;
+	//printf("\n apoptosis_rate %f", apoptosis_rate);
 }
 
 void update_cell_and_death_parameters_O2_based( Cell* pCell, Phenotype& phenotype, double dt )
