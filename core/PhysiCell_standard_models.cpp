@@ -733,7 +733,7 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	double apoptosis_rate = pcell->pe * diffusion_dt;
 	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
 	// Set apoptosis to zero 
-	phenotype.death.rates[apoptosis_model_index] =apoptosis_rate/100;
+	phenotype.death.rates[apoptosis_model_index] = apoptosis_rate/100;
 	//printf("\n apoptosis_rate %f", apoptosis_rate);
 }
 

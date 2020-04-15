@@ -92,21 +92,19 @@ void create_cell_types( void )
 	
 	// set default cell cycle model 
 
-	//cell_defaults.functions.cycle_model = flow_cytometry_separated_cycle_model; 
-	cell_defaults.functions.cycle_model = Ki67_advanced; 
+	cell_defaults.functions.cycle_model = flow_cytometry_separated_cycle_model; 
 	
 	// set default_cell_functions; 
 	
-	// cell_defaults.functions.update_phenotype = update_cell_and_death_parameters_O2_based; 
-	cell_defaults.functions.update_phenotype = wjy_update; 
+	cell_defaults.functions.update_phenotype = update_cell_and_death_parameters_O2_based; 
 	
-	// needed for a 2-D simulation: 
+	// only needed for a 2-D simulation: 
 	
-	/* grab code from heterogeneity */ 
-	
+	/*
 	cell_defaults.functions.set_orientation = up_orientation; 
 	cell_defaults.phenotype.geometry.polarity = 1.0;
 	cell_defaults.phenotype.motility.restrict_to_2D = true; 
+	*/
 	
 	// make sure the defaults are self-consistent. 
 	
@@ -120,10 +118,8 @@ void create_cell_types( void )
 	int necrosis_model_index = cell_defaults.phenotype.death.find_death_model_index( "Necrosis" );
 	int oxygen_substrate_index = microenvironment.find_density_index( "oxygen" ); 
 
-	//int G0G1_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::G0G1_phase );
-	int ppre_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_positive_premitotic );
-	int ppos_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_positive_postmitotic );
-	int neg_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_negative );
+	int G0G1_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::G0G1_phase );
+	int S_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::S_phase );
 
 	// initially no necrosis 
 	cell_defaults.phenotype.death.rates[necrosis_model_index] = 0.0; 
@@ -135,7 +131,8 @@ void create_cell_types( void )
 	
 	// add custom data here, if any 
 	
-
+	
+	
 	// Now, let's define another cell type. 
 	// It's best to just copy the default and modify it. 
 	
@@ -146,26 +143,28 @@ void create_cell_types( void )
 	motile_cell.type = 1; 
 	motile_cell.name = "motile tumor cell"; 
 	
-	// make sure the new cell type has its own reference phenotype
+	// make sure the new cell type has its own reference phenotyhpe
 	
 	motile_cell.parameters.pReference_live_phenotype = &( motile_cell.phenotype ); 
 	
 	// enable random motility 
 	motile_cell.phenotype.motility.is_motile = true; 
-	motile_cell.phenotype.motility.persistence_time = parameters.doubles( "motile_cell_persistence_time" ); // 15.0; 
-	motile_cell.phenotype.motility.migration_speed = parameters.doubles( "motile_cell_migration_speed" ); // 0.25 micron/minute 
+	motile_cell.phenotype.motility.persistence_time = parameters.doubles( "motile_cell_persistence_time" ); // 15.0; // 15 minutes
+	motile_cell.phenotype.motility.migration_speed = parameters.doubles( "motile_cell_migration_speed" ); // 0.25; // 0.25 micron/minute 
 	motile_cell.phenotype.motility.migration_bias = 0.0;// completely random 
 	
 	// Set cell-cell adhesion to 5% of other cells 
-	motile_cell.phenotype.mechanics.cell_cell_adhesion_strength *= parameters.doubles( "motile_cell_relative_adhesion" ); // 0.05; 
+	motile_cell.phenotype.mechanics.cell_cell_adhesion_strength *= 
+		parameters.doubles( "motile_cell_relative_adhesion" ); // 0.05; 
 	
 	// Set apoptosis to zero 
-	motile_cell.phenotype.death.rates[apoptosis_model_index] = parameters.doubles( "motile_cell_apoptosis_rate" ); // 0.0; 
+	motile_cell.phenotype.death.rates[apoptosis_model_index] = 
+		parameters.doubles( "motile_cell_apoptosis_rate" ); // 0.0; 
 	
 	// Set proliferation to 10% of other cells. 
 	// Alter the transition rate from G0G1 state to S state
-	//motile_cell.phenotype.cycle.data.transition_rate(live_index,live_index) *= 
-	//	parameters.doubles( "motile_cell_relative_cycle_entry_rate" ); // 0.1; 
+	motile_cell.phenotype.cycle.data.transition_rate(G0G1_index,S_index) *= 
+		parameters.doubles( "motile_cell_relative_cycle_entry_rate" ); // 0.1; 
 	
 	return; 
 }
@@ -174,20 +173,21 @@ void setup_microenvironment( void )
 {
 	// set domain parameters 
 	
-/* now this is in XML 
-	default_microenvironment_options.X_range = {-1000, 1000}; 
-	default_microenvironment_options.Y_range = {-1000, 1000}; 
-	default_microenvironment_options.simulate_2D = true; 
-*/
-	
+/*	
+	default_microenvironment_options.X_range = {-500, 500}; 
+	default_microenvironment_options.Y_range = {-500, 500}; 
+	default_microenvironment_options.Z_range = {-500, 500}; 
+*/	
 	// make sure to override and go back to 2D 
-	if( default_microenvironment_options.simulate_2D == false )
+	if( default_microenvironment_options.simulate_2D == true )
 	{
-		std::cout << "Warning: overriding XML config option and setting to 2D!" << std::endl; 
-		default_microenvironment_options.simulate_2D = true; 
-	}
+		std::cout << "Warning: overriding XML config option and setting to 3D!" << std::endl; 
+		default_microenvironment_options.simulate_2D = false; 
+	}	
 	
-/* now this is in XML 	
+	
+/*
+	// all this is in XML as of August 2019 (1.6.0)
 	// no gradients need for this example 
 
 	default_microenvironment_options.calculate_gradients = false; 
@@ -203,9 +203,6 @@ void setup_microenvironment( void )
 	// set initial conditions 
 	default_microenvironment_options.initial_condition_vector = { 38.0 }; 
 */
-	
-	// put any custom code to set non-homogeneous initial conditions or 
-	// extra Dirichlet nodes here. 
 	
 	// initialize BioFVM 
 	
@@ -224,16 +221,16 @@ void setup_tissue( void )
 	pC->assign_position( 0.0, 0.0, 0.0 );
 
 	pC = create_cell(); 
-	pC->assign_position( -100, 0, 0.0 );
+	pC->assign_position( -100.0, 0.0, 1.0 );
 	
 	pC = create_cell(); 
-	pC->assign_position( 0, 100, 0.0 );
+	pC->assign_position( 0, 100.0, -7.0 );
 	
 	// now create a motile cell 
 	
 	pC = create_cell( motile_cell ); 
-	pC->assign_position( 15.0, -18.0, 0.0 );
-	
+	pC->assign_position( 15.0, -18.0, 3.0 );
+
 	return; 
 }
 
@@ -242,11 +239,14 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 	// start with flow cytometry coloring 
 	
 	std::vector<std::string> output = false_cell_coloring_cytometry(pCell); 
-		
-	if( pCell->phenotype.death.dead == false && pCell->type == 1 )
+	
+	// if the cell is motile and not dead, paint it black 
+	
+	if( pCell->phenotype.death.dead == false && 
+		pCell->type == 1 )
 	{
 		 output[0] = "black"; 
-		 output[2] = "black"; 
+		 output[2] = "black"; 	
 	}
 	
 	return output; 
