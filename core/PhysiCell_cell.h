@@ -152,6 +152,9 @@ class Cell : public Basic_Agent
  public:
 	std::string type_name; 
 	double birth_time;
+	double pi;
+	double pe;
+	double pf;
  
 	Custom_Cell_Data custom_data;
 	Cell_Parameters parameters;
