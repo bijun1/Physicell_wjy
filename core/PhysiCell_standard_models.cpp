@@ -91,6 +91,7 @@ double wjy_gme = 2;
 double wjy_rea = 1;
 double wjy_ria = 1;
 double wjy_energy = 5;
+double wjy_std_apop_rate = 0.00319/60.0;
 // end
 
 
@@ -728,12 +729,11 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	pcell->pe = (0 <= pcell->pe && pcell->pe <=1) ? pcell->pe : 0.4;
 	pcell->pf = 1 - pcell->pi - pcell->pe;
 
-
         // apoptosis.
-	double apoptosis_rate = pcell->pe * diffusion_dt;
+	double apoptosis_rate = pcell->pe * wjy_std_apop_rate;
 	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
-	// Set apoptosis to zero 
-	phenotype.death.rates[apoptosis_model_index] = apoptosis_rate/100;
+	// Update apoptosis rate 
+	phenotype.death.rates[apoptosis_model_index] = apoptosis_rate;
 	//printf("\n apoptosis_rate %f", apoptosis_rate);
 }
 

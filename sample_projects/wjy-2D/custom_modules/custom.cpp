@@ -214,25 +214,78 @@ void setup_microenvironment( void )
 	return; 
 }
 
+std::vector<int> randVector(int num) {
+    std::vector<int> result;
+    result.clear();
+    result.reserve(num);
+    srand((int)time(0));
+    for (size_t i = 0; i < num; i++)
+    {
+        result.push_back(i);
+    }
+    int p1;
+    int p2;
+    int temp;
+    int count = num;
+
+    while (--num)
+    {
+        p1 = num;
+        p2 = rand() % num;
+        temp = result[p1];
+        result[p1] = result[p2];
+        result[p2] = temp;
+    }
+    return result;
+}
+
+
+class cord {
+ public:
+	int x;
+	int y;
+	cord(int i, int j) : x(i), y(j) {}
+};
+
 void setup_tissue( void )
 {
 	// create some cells near the origin
 	
 	Cell* pC;
+        
+	int sample_num = 100;
+	int radius = 100;
+        std::vector<cord> T;
+	for (int i = -radius; i <= radius; i++) {
+		for (int j = -radius; j <= radius; j++) {
+			T.push_back(cord(i, j));
+		}
+	}
+	std::vector<int> index = randVector((2 *radius + 1) * (2 * radius + 1));
+	int count = 0;
+	for (int id : index) {
+		cord c = T[id];
+		if (c.x * c.x + c.y * c.y > radius * radius) { continue; }
+		pC = create_cell(); 
+		pC->assign_position( (double) c.x, (double) c.y, 0.0 );
+		count++;
+		if (count > sample_num) { break; }
+	}
 
-	pC = create_cell(); 
-	pC->assign_position( 0.0, 0.0, 0.0 );
 
-	pC = create_cell(); 
-	pC->assign_position( -100, 0, 0.0 );
-	
-	pC = create_cell(); 
-	pC->assign_position( 0, 100, 0.0 );
+	//pC = create_cell(); 
+	//pC->assign_position( 0.0, 0.0, 0.0 );
+
+	//pC = create_cell(); 
+	//pC->assign_position( -100, 0, 0.0 );
+	//
+	//pC = create_cell(); 
+	//pC->assign_position( 0, 100, 0.0 );
 	
 	// now create a motile cell 
 	
-	pC = create_cell( motile_cell ); 
-	pC->assign_position( 15.0, -18.0, 0.0 );
+	//pC = create_cell( motile_cell ); 
+	//pC->assign_position( 15.0, -18.0, 0.0 );
 	
 	return; 
 }
