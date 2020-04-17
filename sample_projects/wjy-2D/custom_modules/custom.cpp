@@ -298,12 +298,33 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 	// start with flow cytometry coloring 
 	
 	std::vector<std::string> output = false_cell_coloring_cytometry(pCell); 
-		
-	if( pCell->phenotype.death.dead == false && pCell->type == 1 )
-	{
-		 output[0] = "black"; 
-		 output[2] = "black"; 
+
+	switch(pCell->phenotype.cycle.current_phase().code) {
+		// black
+		case PhysiCell_constants::apoptotic:
+		 	output[0] = "rgb(0,0,0)"; 
+		 	output[2] = "rgb(0,0,0)"; 
+			break;
+		// Blue
+		case PhysiCell_constants::Ki67_positive_premitotic:
+		 	output[0] = "rgb(0,0,255)"; 
+		 	output[2] = "rgb(0,0,190)"; 
+			break;
+		// Green
+		case PhysiCell_constants::Ki67_positive_postmitotic:
+		 	output[0] = "rgb(0,255,0)"; 
+		 	output[2] = "rgb(0,190,0)"; 
+			break;
+		// Red
+		case PhysiCell_constants::Ki67_negative:
+		 	output[0] = "rgb(255,0,0)"; 
+		 	output[2] = "rgb(190,0,0)"; 
+			break;
+		// Yellow
+		default:
+			output[0] = "rgb(255,255,0)";
+			output[2] = "rgb(190,190,0)";
+			break;
 	}
-	
 	return output; 
 }
