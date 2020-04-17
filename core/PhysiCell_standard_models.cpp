@@ -721,16 +721,26 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	update_cell_and_death_parameters_O2_based(pcell, phenotype, dt);
 	//printf("\n Cell %d 	birth_time  %f		age %f.",
 	//	       	pcell->ID, pcell->birth_time, PhysiCell_globals.current_time - pcell->birth_time);
-	double fi = (-wjy_beta * wjy_rengp - wjy_alpha * wjy_rengpf * pcell->pf)  * wjy_energy;
-	double fe = (-wjy_gamma * pcell->pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pcell->pf) * wjy_energy;
-	pcell->pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
-	pcell->pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
-	pcell->pi = (0 <= pcell->pi && pcell->pi <=1) ? pcell->pi : 0.4;
-	pcell->pe = (0 <= pcell->pe && pcell->pe <=1) ? pcell->pe : 0.4;
-	pcell->pf = 1 - pcell->pi - pcell->pe;
+	int pi_index = pcell->custom_data.find_variable_index("pi");
+	int pe_index = pcell->custom_data.find_variable_index("pe");
+	int pf_index = pcell->custom_data.find_variable_index("pf");
+	double pi = pcell->custom_data[pi_index];
+	double pe = pcell->custom_data[pe_index];
+	double pf = pcell->custom_data[pf_index];
+	double fi = (-wjy_beta * wjy_rengp - wjy_alpha * wjy_rengpf * pf)  * wjy_energy;
+	double fe = (-wjy_gamma * pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pf) * wjy_energy;
+	pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
+	pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
+	if (0 > pi || 1 < pi || 0 > pe || 1 < pe || pi + pe > 1) { 
+		pi = 0.4;
+		pe = 0.4;
+	}
+	pcell->custom_data[pi_index] = pi;
+	pcell->custom_data[pe_index] = pe;
+	pcell->custom_data[pf_index] = 1 - pcell->custom_data[pi_index] - pcell->custom_data[pe_index];
 
         // apoptosis.
-	double apoptosis_rate = pcell->pe * wjy_std_apop_rate;
+	double apoptosis_rate = pcell->custom_data[pe_index] * wjy_std_apop_rate;
 	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
 	// Update apoptosis rate 
 	phenotype.death.rates[apoptosis_model_index] = apoptosis_rate;

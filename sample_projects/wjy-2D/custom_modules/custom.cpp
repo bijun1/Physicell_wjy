@@ -133,7 +133,10 @@ void create_cell_types( void )
 	cell_defaults.phenotype.secretion.secretion_rates[oxygen_substrate_index] = 0; 
 	cell_defaults.phenotype.secretion.saturation_densities[oxygen_substrate_index] = 38; 
 	
-	// add custom data here, if any 
+	// add custom data here 
+	cell_defaults.custom_data.add_variable("pi", "dimensionless", 0.4);
+	cell_defaults.custom_data.add_variable("pe", "dimensionless", 0.4);
+	cell_defaults.custom_data.add_variable("pf", "dimensionless", 0.2);
 	
 
 	// Now, let's define another cell type. 
