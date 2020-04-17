@@ -80,17 +80,6 @@ Cycle_Model cycling_quiescent;
 Death_Parameters apoptosis_parameters, necrosis_parameters; 
 
 // wjy defined
-double wjy_beta = 1;
-double wjy_alpha = 2;
-double wjy_gamma = 2;
-double wjy_rengp = 0.6;
-double wjy_rengpp = -0.8;
-double wjy_rengpf = -0.2;
-double wjy_gmi = 2;
-double wjy_gme = 2;
-double wjy_rea = 1;
-double wjy_ria = 1;
-double wjy_energy = 5;
 double wjy_std_apop_rate = 0.00319/60.0;
 // end
 
@@ -719,8 +708,17 @@ void initialize_default_cell_definition( void )
 
 void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	update_cell_and_death_parameters_O2_based(pcell, phenotype, dt);
-	//printf("\n Cell %d 	birth_time  %f		age %f.",
-	//	       	pcell->ID, pcell->birth_time, PhysiCell_globals.current_time - pcell->birth_time);
+	double wjy_beta = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_beta")];
+	double wjy_alpha = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_alpha")];
+	double wjy_gamma = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_gamma")];
+	double wjy_rengp = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_rengp")];
+	double wjy_rengpp = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_rengpp")];
+	double wjy_rengpf = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_rengpf")];
+	double wjy_gmi = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_gmi")];
+	double wjy_gme = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_gme")];
+	double wjy_rea = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_rea")];
+	double wjy_ria = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_ria")];
+	double wjy_energy = pcell->custom_data[pcell->custom_data.find_variable_index("wjy_energy")];
 	int pi_index = pcell->custom_data.find_variable_index("pi");
 	int pe_index = pcell->custom_data.find_variable_index("pe");
 	int pf_index = pcell->custom_data.find_variable_index("pf");

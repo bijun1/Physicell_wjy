@@ -134,10 +134,21 @@ void create_cell_types( void )
 	cell_defaults.phenotype.secretion.saturation_densities[oxygen_substrate_index] = 38; 
 	
 	// add custom data here 
-	cell_defaults.custom_data.add_variable("pi", "dimensionless", 0.4);
-	cell_defaults.custom_data.add_variable("pe", "dimensionless", 0.4);
-	cell_defaults.custom_data.add_variable("pf", "dimensionless", 0.2);
-	
+	cell_defaults.custom_data.add_variable("pi", "dimensionless", parameters.doubles("pi_ini"));
+	cell_defaults.custom_data.add_variable("pe", "dimensionless", parameters.doubles("pe_ini"));
+	cell_defaults.custom_data.add_variable("pf", "dimensionless", parameters.doubles("pf_ini"));
+
+	cell_defaults.custom_data.add_variable("wjy_beta", "dimensionless", parameters.doubles("wjy_beta"));
+	cell_defaults.custom_data.add_variable("wjy_alpha", "dimensionless", parameters.doubles("wjy_alpha"));
+	cell_defaults.custom_data.add_variable("wjy_gamma", "dimensionless", parameters.doubles("wjy_gamma"));
+	cell_defaults.custom_data.add_variable("wjy_rengp", "dimensionless", parameters.doubles("wjy_rengp"));
+	cell_defaults.custom_data.add_variable("wjy_rengpp", "dimensionless", parameters.doubles("wjy_rengpp"));
+	cell_defaults.custom_data.add_variable("wjy_rengpf", "dimensionless", parameters.doubles("wjy_rengpf"));
+	cell_defaults.custom_data.add_variable("wjy_gmi", "dimensionless", parameters.doubles("wjy_gmi"));
+	cell_defaults.custom_data.add_variable("wjy_gme", "dimensionless", parameters.doubles("wjy_gme"));
+	cell_defaults.custom_data.add_variable("wjy_rea", "dimensionless", parameters.doubles("wjy_rea"));
+	cell_defaults.custom_data.add_variable("wjy_ria", "dimensionless", parameters.doubles("wjy_ria"));
+	cell_defaults.custom_data.add_variable("wjy_energy", "dimensionless", parameters.doubles("wjy_energy"));
 
 	// Now, let's define another cell type. 
 	// It's best to just copy the default and modify it. 
