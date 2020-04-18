@@ -1,5 +1,5 @@
 VERSION := $(shell grep . VERSION.txt | cut -f1 -d:)
-PROGRAM_NAME := project3D
+PROGRAM_NAME := wjy3D
 
 CC := g++
 # CC := g++-mp-7 # typical macports compiler name

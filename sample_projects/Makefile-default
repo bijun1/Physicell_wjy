@@ -65,15 +65,6 @@ list-projects:
 	@echo "Sample projects: template2D template3D biorobots-sample cancer-biorobots-sample heterogeneity-sample"
 	@echo "                 cancer-immune-sample virus-macrophage-sample"
 	
-wjy: 
-	cp ./sample_projects/wjy/custom_modules/* ./custom_modules/
-	touch main.cpp && cp main.cpp main-backup.cpp
-	cp ./sample_projects/wjy/main-wjy.cpp ./main.cpp 
-	cp Makefile Makefile-backup
-	cp ./sample_projects/wjy/Makefile .
-	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml 
-	cp ./sample_projects/wjy/config/* ./config/
-
 wjy-2D: 
 	cp ./sample_projects/wjy-2D/custom_modules/* ./custom_modules/
 	touch main.cpp && cp main.cpp main-backup.cpp
@@ -82,6 +73,15 @@ wjy-2D:
 	cp ./sample_projects/wjy-2D/Makefile .
 	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml 
 	cp ./sample_projects/wjy-2D/config/* ./config/
+
+wjy-3D: 
+	cp ./sample_projects/wjy-3D/custom_modules/* ./custom_modules/
+	touch main.cpp && cp main.cpp main-backup.cpp
+	cp ./sample_projects/wjy-3D/main-wjy-3D.cpp ./main.cpp 
+	cp Makefile Makefile-backup
+	cp ./sample_projects/wjy-3D/Makefile .
+	cp ./config/PhysiCell_settings.xml ./config/PhysiCell_settings-backup.xml 
+	cp ./sample_projects/wjy-3D/config/* ./config/
 
 template2D: 
 	cp ./sample_projects/template2D/custom_modules/* ./custom_modules/

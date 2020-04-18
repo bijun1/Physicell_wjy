@@ -153,6 +153,23 @@
 		<motile_cell_apoptosis_rate type="double" units="1/min">0.0</motile_cell_apoptosis_rate> 
 		<motile_cell_relative_cycle_entry_rate type="double" units="dimensionless">0.1</motile_cell_relative_cycle_entry_rate>
 		
+		<!-- WJY defined -->
+		<sample_num type="int" units="dimensionless">20</sample_num>
+		<radius type="int" units="dimensionless">100</radius>
+		<pi_ini type="double" units="dimensionless">0.4</pi_ini>
+		<pe_ini type="double" units="dimensionless">0.4</pe_ini>
+		<pf_ini type="double" units="dimensionless">0.2</pf_ini>
+		<wjy_beta type="double" units="dimensionless">1</wjy_beta>
+		<wjy_alpha type="double" units="dimensionless">2</wjy_alpha>
+		<wjy_gamma type="double" units="dimensionless">2</wjy_gamma>
+		<wjy_rengp type="double" units="dimensionless">0.6</wjy_rengp>
+		<wjy_rengpp type="double" units="dimensionless">-0.8</wjy_rengpp>
+		<wjy_rengpf type="double" units="dimensionless">-0.2</wjy_rengpf>
+		<wjy_gmi type="double" units="dimensionless">2</wjy_gmi>
+		<wjy_gme type="double" units="dimensionless">2</wjy_gme>
+		<wjy_rea type="double" units="dimensionless">1</wjy_rea>
+		<wjy_ria type="double" units="dimensionless">1</wjy_ria>
+		<wjy_energy type="double" units="dimensionless">5</wjy_energy>
 	</user_parameters>
 	
 	

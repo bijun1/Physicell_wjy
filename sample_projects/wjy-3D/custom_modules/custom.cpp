@@ -96,7 +96,7 @@ void create_cell_types( void )
 	
 	// set default_cell_functions; 
 	
-	cell_defaults.functions.update_phenotype = update_cell_and_death_parameters_O2_based; 
+	cell_defaults.functions.update_phenotype = wjy_update; 
 	
 	// only needed for a 2-D simulation: 
 	
@@ -134,7 +134,18 @@ void create_cell_types( void )
 	cell_defaults.custom_data.add_variable("pe", "dimensionless", 0.4);
 	cell_defaults.custom_data.add_variable("pf", "dimensionless", 0.2);
 	
-	
+	cell_defaults.custom_data.add_variable("wjy_beta", "dimensionless", parameters.doubles("wjy_beta"));
+	cell_defaults.custom_data.add_variable("wjy_alpha", "dimensionless", parameters.doubles("wjy_alpha"));
+	cell_defaults.custom_data.add_variable("wjy_gamma", "dimensionless", parameters.doubles("wjy_gamma"));
+	cell_defaults.custom_data.add_variable("wjy_rengp", "dimensionless", parameters.doubles("wjy_rengp"));
+	cell_defaults.custom_data.add_variable("wjy_rengpp", "dimensionless", parameters.doubles("wjy_rengpp"));
+	cell_defaults.custom_data.add_variable("wjy_rengpf", "dimensionless", parameters.doubles("wjy_rengpf"));
+	cell_defaults.custom_data.add_variable("wjy_gmi", "dimensionless", parameters.doubles("wjy_gmi"));
+	cell_defaults.custom_data.add_variable("wjy_gme", "dimensionless", parameters.doubles("wjy_gme"));
+	cell_defaults.custom_data.add_variable("wjy_rea", "dimensionless", parameters.doubles("wjy_rea"));
+	cell_defaults.custom_data.add_variable("wjy_ria", "dimensionless", parameters.doubles("wjy_ria"));
+	cell_defaults.custom_data.add_variable("wjy_energy", "dimensionless", parameters.doubles("wjy_energy"));
+
 	
 	// Now, let's define another cell type. 
 	// It's best to just copy the default and modify it. 
@@ -166,8 +177,8 @@ void create_cell_types( void )
 	
 	// Set proliferation to 10% of other cells. 
 	// Alter the transition rate from G0G1 state to S state
-	motile_cell.phenotype.cycle.data.transition_rate(G0G1_index,S_index) *= 
-		parameters.doubles( "motile_cell_relative_cycle_entry_rate" ); // 0.1; 
+	//motile_cell.phenotype.cycle.data.transition_rate(G0G1_index,S_index) *= 
+	//	parameters.doubles( "motile_cell_relative_cycle_entry_rate" ); // 0.1; 
 	
 	return; 
 }
@@ -214,43 +225,100 @@ void setup_microenvironment( void )
 	return; 
 }
 
+std::vector<int> randVector(int num) {
+    std::vector<int> result;
+    result.clear();
+    result.reserve(num);
+    srand((int)time(0));
+    for (size_t i = 0; i < num; i++)
+    {
+        result.push_back(i);
+    }
+    int p1;
+    int p2;
+    int temp;
+    int count = num;
+
+    while (--num)
+    {
+        p1 = num;
+        p2 = rand() % num;
+        temp = result[p1];
+        result[p1] = result[p2];
+        result[p2] = temp;
+    }
+    return result;
+}
+
+
+class cord {
+ public:
+	int x;
+	int y;
+	int z;
+	cord(int i, int j, int k) : x(i), y(j), z(k){}
+};
+
 void setup_tissue( void )
 {
 	// create some cells near the origin
 	
 	Cell* pC;
-
-	pC = create_cell(); 
-	pC->assign_position( 0.0, 0.0, 0.0 );
-
-	pC = create_cell(); 
-	pC->assign_position( -100.0, 0.0, 1.0 );
-	
-	pC = create_cell(); 
-	pC->assign_position( 0, 100.0, -7.0 );
-	
-	// now create a motile cell 
-	
-	pC = create_cell( motile_cell ); 
-	pC->assign_position( 15.0, -18.0, 3.0 );
+        
+	int sample_num = parameters.ints("sample_num");
+	int radius = parameters.ints("radius");
+        std::vector<cord> T;
+	for (int i = -radius; i <= radius; i++) {
+		for (int j = -radius; j <= radius; j++) {
+			for (int k = -radius; k <= radius; k++) {
+				T.push_back(cord(i, j, k));
+			}
+		}
+	}
+	std::vector<int> index = randVector((2 *radius + 1) * (2 * radius + 1) * (2 * radius + 1));
+	int count = 0;
+	for (int id : index) {
+		cord c = T[id];
+		if (c.x * c.x + c.y * c.y  + c.z * c.z> radius * radius * radius) { continue; }
+		pC = create_cell(); 
+		pC->assign_position( (double) c.x, (double) c.y, (double) c.z );
+		count++;
+		if (count > sample_num) { break; }
+	}
 
 	return; 
 }
 
 std::vector<std::string> my_coloring_function( Cell* pCell )
 {
-	// start with flow cytometry coloring 
-	
 	std::vector<std::string> output = false_cell_coloring_cytometry(pCell); 
-	
-	// if the cell is motile and not dead, paint it black 
-	
-	if( pCell->phenotype.death.dead == false && 
-		pCell->type == 1 )
-	{
-		 output[0] = "black"; 
-		 output[2] = "black"; 	
+
+	switch(pCell->phenotype.cycle.current_phase().code) {
+		// black
+		case PhysiCell_constants::apoptotic:
+		 	output[0] = "rgb(0,0,0)"; 
+		 	output[2] = "rgb(0,0,0)"; 
+			break;
+		// BR
+		case PhysiCell_constants::Ki67_positive_premitotic:
+		 	output[0] = "rgb(100,0,255)"; 
+		 	output[2] = "rgb(50,0,190)"; 
+			break;
+		// RB
+		case PhysiCell_constants::Ki67_positive_postmitotic:
+		 	output[0] = "rgb(255,0,100)"; 
+		 	output[2] = "rgb(190,0,50)"; 
+			break;
+		// B
+		case PhysiCell_constants::Ki67_negative:
+		 	output[0] = "rgb(0,0,255)"; 
+		 	output[2] = "rgb(0,0,190)"; 
+			break;
+		// Yellow
+		default:
+			output[0] = "rgb(255,255,0)";
+			output[2] = "rgb(190,190,0)";
+			break;
 	}
-	
 	return output; 
 }
