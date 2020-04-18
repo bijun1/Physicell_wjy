@@ -267,10 +267,8 @@ void setup_tissue( void )
 	
 	Cell* pC;
         
-	//int sample_num = parameters.ints("sample_num");
-	//int radius = parameters.ints("radius");
-	int sample_num = 100;
-	int radius = 100;
+	int sample_num = parameters.ints("sample_num");
+	int radius = parameters.ints("radius");
         std::vector<cord> T;
 	for (int i = -radius; i <= radius; i++) {
 		for (int j = -radius; j <= radius; j++) {
@@ -318,20 +316,20 @@ std::vector<std::string> my_coloring_function( Cell* pCell )
 		 	output[0] = "rgb(0,0,0)"; 
 		 	output[2] = "rgb(0,0,0)"; 
 			break;
-		// Blue
+		// BR
 		case PhysiCell_constants::Ki67_positive_premitotic:
+		 	output[0] = "rgb(100,0,255)"; 
+		 	output[2] = "rgb(50,0,190)"; 
+			break;
+		// RB
+		case PhysiCell_constants::Ki67_positive_postmitotic:
+		 	output[0] = "rgb(255,0,100)"; 
+		 	output[2] = "rgb(190,0,50)"; 
+			break;
+		// B
+		case PhysiCell_constants::Ki67_negative:
 		 	output[0] = "rgb(0,0,255)"; 
 		 	output[2] = "rgb(0,0,190)"; 
-			break;
-		// Green
-		case PhysiCell_constants::Ki67_positive_postmitotic:
-		 	output[0] = "rgb(0,255,0)"; 
-		 	output[2] = "rgb(0,190,0)"; 
-			break;
-		// Red
-		case PhysiCell_constants::Ki67_negative:
-		 	output[0] = "rgb(255,0,0)"; 
-		 	output[2] = "rgb(190,0,0)"; 
 			break;
 		// Yellow
 		default:
