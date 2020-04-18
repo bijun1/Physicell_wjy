@@ -267,6 +267,8 @@ void setup_tissue( void )
 	
 	Cell* pC;
         
+	//int sample_num = parameters.ints("sample_num");
+	//int radius = parameters.ints("radius");
 	int sample_num = 100;
 	int radius = 100;
         std::vector<cord> T;

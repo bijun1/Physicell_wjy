@@ -729,10 +729,25 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	double fe = (-wjy_gamma * pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pf) * wjy_energy;
 	pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
 	pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
-	if (0 > pi || 1 < pi || 0 > pe || 1 < pe || pi + pe > 1) { 
-		pi = 0.4;
-		pe = 0.4;
+	if (pi > 1) {
+		pi = 1 - fabs(NormalRandom(0, 1) / 100);
 	}
+	if (pe > 1) {
+		pe = 1 - fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi < 0) {
+		pi = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pe < 0) {
+		pe = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi + pe > 1) {
+		double pi_new = pi / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		double pe_new = pe / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		pi = pi_new;
+		pe = pe_new;
+	}
+
 	pcell->custom_data[pi_index] = pi;
 	pcell->custom_data[pe_index] = pe;
 	pcell->custom_data[pf_index] = 1 - pcell->custom_data[pi_index] - pcell->custom_data[pe_index];
