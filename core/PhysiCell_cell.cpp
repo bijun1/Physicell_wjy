@@ -396,7 +396,41 @@ Cell* Cell::divide( )
 	child->copy_data( this );	
 	child->copy_function_pointers(this);
 	child->parameters = parameters;
-	
+
+	// update pi pe.
+	int pi_index = custom_data.find_variable_index("pi");
+	int pe_index = custom_data.find_variable_index("pe");
+	int pf_index = custom_data.find_variable_index("pf");
+	double pi = custom_data[pi_index];
+	double pe = custom_data[pe_index];
+    double pi_copy_inre = 1.05;
+    double pe_copy_inre = 1.05;
+    pi *= pi_copy_inre;
+    pe *= pe_copy_inre;
+	if (pi > 1) {
+		pi = 1 - fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pe > 1) {
+		pe = 1 - fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi < 0) {
+		pi = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pe < 0) {
+		pe = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi + pe > 1) {
+		double pi_new = pi / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		double pe_new = pe / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		pi = pi_new;
+		pe = pe_new;
+	}
+
+	custom_data[pi_index] = pi;
+	custom_data[pe_index] = pe;
+	custom_data[pf_index] = 1 - pi - pe;
+
+
 	// evenly divide internalized substrates 
 	// if these are not actively tracked, they are zero anyway 
 	*internalized_substrates *= 0.5; 

@@ -730,15 +730,6 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
 	pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
 
-    int code = phenotype.cycle.current_phase().code();
-    double pi_copy_inre = parameters.doubles("pi_copy_incre");
-    double pe_copy_inre = parameters.doubles("pe_copy_incre");
-    if (code == PhysiCell_constants::Ki67_positive_postmitotic) {
-        pi *= pi_copy_inre;
-        pe *= pe_copy_inre;
-    }
-
-
 	if (pi > 1) {
 		pi = 1 - fabs(NormalRandom(0, 1) / 100);
 	}
