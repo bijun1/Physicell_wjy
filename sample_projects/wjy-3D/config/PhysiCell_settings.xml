@@ -156,6 +156,8 @@
 		<!-- WJY defined -->
 		<sample_num type="int" units="dimensionless">20</sample_num>
 		<radius type="int" units="dimensionless">100</radius>
+		<pi_copy_incre type="double" units="dimensionless">1</pi_copy_incre>
+		<pe_copy_incre type="double" units="dimensionless">1</pe_copy_incre>
 		<pi_ini type="double" units="dimensionless">0.4</pi_ini>
 		<pe_ini type="double" units="dimensionless">0.4</pe_ini>
 		<pf_ini type="double" units="dimensionless">0.2</pf_ini>
