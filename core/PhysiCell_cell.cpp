@@ -401,12 +401,16 @@ Cell* Cell::divide( )
 	int pi_index = custom_data.find_variable_index("pi");
 	int pe_index = custom_data.find_variable_index("pe");
 	int pf_index = custom_data.find_variable_index("pf");
+	child->custom_data[pi_index] *= 1 + 0.05 * NormalRandom(0, 1); 
+	child->custom_data[pe_index] *= 1 + 0.05 * NormalRandom(0, 1); 
+	child->custom_data[pf_index] = 1 - child->custom_data[pi_index] - child->custom_data[pe_index];
+
 	double pi = custom_data[pi_index];
 	double pe = custom_data[pe_index];
-    double pi_copy_inre = 1.05;
-    double pe_copy_inre = 1.05;
-    pi *= pi_copy_inre;
-    pe *= pe_copy_inre;
+        double pi_copy_inre = 1.05;
+        double pe_copy_inre = 1.05;
+        pi *= pi_copy_inre;
+        pe *= pe_copy_inre;
 	if (pi > 1) {
 		pi = 1 - fabs(NormalRandom(0, 1) / 100);
 	}
@@ -823,8 +827,8 @@ Cell* create_cell( void )
 	int pi_index = pNew->custom_data.find_variable_index("pi");
 	int pe_index = pNew->custom_data.find_variable_index("pe");
 	int pf_index = pNew->custom_data.find_variable_index("pf");
-	pNew->custom_data[pi_index] *= 1 + 0.1 * NormalRandom(0, 1); 
-	pNew->custom_data[pe_index] *= 1 + 0.1 * NormalRandom(0, 1); 
+	pNew->custom_data[pi_index] *= 1 + 0.05 * NormalRandom(0, 1); 
+	pNew->custom_data[pe_index] *= 1 + 0.05 * NormalRandom(0, 1); 
 	pNew->custom_data[pf_index] = 1 - pNew->custom_data[pi_index] - pNew->custom_data[pe_index];
 
 	// new usability enhancements in May 2017 

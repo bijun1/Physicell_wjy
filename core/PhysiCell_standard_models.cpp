@@ -754,7 +754,7 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	pcell->custom_data[pf_index] = 1 - pcell->custom_data[pi_index] - pcell->custom_data[pe_index];
 
         // apoptosis.
-	double apoptosis_rate = pcell->custom_data[pe_index] * wjy_std_apop_rate;
+	double apoptosis_rate = pcell->custom_data[pe_index] * wjy_std_apop_rate*3;
 	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
 	// Update apoptosis rate 
 	phenotype.death.rates[apoptosis_model_index] = apoptosis_rate;
