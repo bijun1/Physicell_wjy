@@ -401,14 +401,16 @@ Cell* Cell::divide( )
 	int pi_index = custom_data.find_variable_index("pi");
 	int pe_index = custom_data.find_variable_index("pe");
 	int pf_index = custom_data.find_variable_index("pf");
-	child->custom_data[pi_index] *= 1 + 0.05 * NormalRandom(0, 1); 
-	child->custom_data[pe_index] *= 1 + 0.05 * NormalRandom(0, 1); 
+	int pi_ini_index = custom_data.find_variable_index("pi_ini");
+	int pe_ini_index = custom_data.find_variable_index("pe_ini");
+	child->custom_data[pi_index] = child->custom_data[pi_ini_index] * (1 + 0.05 * NormalRandom(0, 1)); 
+	child->custom_data[pe_index] = child->custom_data[pe_ini_index] * (1 + 0.05 * NormalRandom(0, 1)); 
 	child->custom_data[pf_index] = 1 - child->custom_data[pi_index] - child->custom_data[pe_index];
 
 	double pi = custom_data[pi_index];
 	double pe = custom_data[pe_index];
-        double pi_copy_inre = 1.05;
-        double pe_copy_inre = 1.05;
+        double pi_copy_inre = 1.1;
+        double pe_copy_inre = 1.1;
         pi *= pi_copy_inre;
         pe *= pe_copy_inre;
 	if (pi > 1) {

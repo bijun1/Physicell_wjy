@@ -134,6 +134,9 @@ void create_cell_types( void )
 	cell_defaults.custom_data.add_variable("pe", "dimensionless", parameters.doubles("pe_ini"));
 	cell_defaults.custom_data.add_variable("pf", "dimensionless", parameters.doubles("pf_ini"));
 	
+	cell_defaults.custom_data.add_variable("pi_ini", "dimensionless", parameters.doubles("pi_ini"));
+	cell_defaults.custom_data.add_variable("pe_ini", "dimensionless", parameters.doubles("pe_ini"));
+
 	cell_defaults.custom_data.add_variable("wjy_beta", "dimensionless", parameters.doubles("wjy_beta"));
 	cell_defaults.custom_data.add_variable("wjy_alpha", "dimensionless", parameters.doubles("wjy_alpha"));
 	cell_defaults.custom_data.add_variable("wjy_gamma", "dimensionless", parameters.doubles("wjy_gamma"));

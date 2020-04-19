@@ -753,6 +753,11 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	pcell->custom_data[pe_index] = pe;
 	pcell->custom_data[pf_index] = 1 - pcell->custom_data[pi_index] - pcell->custom_data[pe_index];
 
+	// update trans rate according to pf
+	int neg_index = phenotype.cycle.model().find_phase_index( PhysiCell_constants::Ki67_negative );
+	int ppre_index = phenotype.cycle.model().find_phase_index( PhysiCell_constants::Ki67_positive_premitotic );
+	phenotype.cycle.data.transition_rate(neg_index, ppre_index) *= pcell->custom_data[pf_index] * 10; 
+
         // apoptosis.
 	double apoptosis_rate = pcell->custom_data[pe_index] * wjy_std_apop_rate*3;
 	int apoptosis_model_index = phenotype.death.find_death_model_index( "Apoptosis" );
