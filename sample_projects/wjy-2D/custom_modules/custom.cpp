@@ -150,6 +150,14 @@ void create_cell_types( void )
 	cell_defaults.custom_data.add_variable("wjy_ria", "dimensionless", parameters.doubles("wjy_ria"));
 	cell_defaults.custom_data.add_variable("wjy_energy", "dimensionless", parameters.doubles("wjy_energy"));
 
+	// change pi pe.
+	int pi_index = cell_defaults.custom_data.find_variable_index("pi");
+	int pe_index = cell_defaults.custom_data.find_variable_index("pe");
+	int pf_index = cell_defaults.custom_data.find_variable_index("pf");
+	cell_defaults.custom_data[pi_index] *= 1 + 0.1 * NormalRandom(0, 1)  
+	cell_defaults.custom_data[pe_index] *= 1 + 0.1 * NormalRandom(0, 1)  
+	cell_defaults.custom_data[pf_index] = 1 - cell_defaults.custom_data[pi_index] - cell_defaults.custom_data[pe_index];
+
 	// Now, let's define another cell type. 
 	// It's best to just copy the default and modify it. 
 	

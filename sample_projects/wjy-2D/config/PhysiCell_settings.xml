@@ -168,7 +168,7 @@
 		<wjy_gme type="double" units="dimensionless">2</wjy_gme>
 		<wjy_rea type="double" units="dimensionless">1</wjy_rea>
 		<wjy_ria type="double" units="dimensionless">1</wjy_ria>
-		<wjy_energy type="double" units="dimensionless">5</wjy_energy>
+		<wjy_energy type="double" units="dimensionless">0.15</wjy_energy>
 	</user_parameters>
 	
 </PhysiCell_settings>
