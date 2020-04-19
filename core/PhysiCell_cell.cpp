@@ -819,6 +819,14 @@ Cell* create_cell( void )
 	(*all_cells).push_back( pNew ); 
 	pNew->index=(*all_cells).size()-1;
 	
+	// change pi pe.
+	int pi_index = pNew->custom_data.find_variable_index("pi");
+	int pe_index = pNew->custom_data.find_variable_index("pe");
+	int pf_index = pNew->custom_data.find_variable_index("pf");
+	pNew->custom_data[pi_index] *= 1 + 0.1 * NormalRandom(0, 1); 
+	pNew->custom_data[pe_index] *= 1 + 0.1 * NormalRandom(0, 1); 
+	pNew->custom_data[pf_index] = 1 - pNew->custom_data[pi_index] - pNew->custom_data[pe_index];
+
 	// new usability enhancements in May 2017 
 	
 	if( BioFVM::get_default_microenvironment() )
