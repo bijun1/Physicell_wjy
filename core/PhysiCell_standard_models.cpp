@@ -725,33 +725,35 @@ void wjy_update(Cell* pcell, Phenotype& phenotype, double dt) {
 	double pi = pcell->custom_data[pi_index];
 	double pe = pcell->custom_data[pe_index];
 	double pf = pcell->custom_data[pf_index];
-	double fi = (-wjy_beta * wjy_rengp - wjy_alpha * wjy_rengpf * pf)  * wjy_energy;
-	double fe = (-wjy_gamma * pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pf) * wjy_energy;
-	pi += (diffusion_dt / wjy_gmi) * (wjy_ria * NormalRandom(0, 1) + fi); 
-	pe += (diffusion_dt / wjy_gme) * (wjy_rea * NormalRandom(0, 1) + fe); 
-
+	double fi = -(wjy_beta * wjy_rengp - wjy_alpha * wjy_rengpf * pf) ;
+	double fe = -(wjy_gamma * pe * wjy_rengpp - wjy_alpha * wjy_rengpf * pf);
+	pi += fi*diffusion_dt / wjy_gmi * (1+wjy_ria * NormalRandom(0, 1)); 
+	pe += fe*diffusion_dt / wjy_gme * (1+wjy_rea * NormalRandom(0, 1)); 
 	if (pi > 1) {
-		pi = 1 - fabs(NormalRandom(0, 1) / 100);
+		pi = 1 - fabs(NormalRandom(0, 1) / 10);
 	}
 	if (pe > 1) {
-		pe = 1 - fabs(NormalRandom(0, 1) / 100);
+		pe = 1 - fabs(NormalRandom(0, 1) / 10);
 	}
 	if (pi < 0) {
-		pi = fabs(NormalRandom(0, 1) / 100);
+		pi = fabs(NormalRandom(0, 1) / 10);
 	}
 	if (pe < 0) {
-		pe = fabs(NormalRandom(0, 1) / 100);
+		pe = fabs(NormalRandom(0, 1) / 10);
 	}
 	if (pi + pe > 1) {
-		double pi_new = pi / (pi + pe + fabs(NormalRandom(0, 1) / 100));
-		double pe_new = pe / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		double pi_new =pi/(pi+pe) *(1- fabs(NormalRandom(0, 1) / 10));
+		double pe_new = pe*pi_new/pi;
 		pi = pi_new;
 		pe = pe_new;
 	}
+	int time_cycles = (int)(PhysiCell_globals.current_time / diffusion_dt);
+	if (time_cycles % 6000 == 0) {
+		pcell->custom_data[pi_index] = pi;
+		pcell->custom_data[pe_index] = pe;
+		pcell->custom_data[pf_index] = 1 - pi - pe;
+	}
 
-	pcell->custom_data[pi_index] = pi;
-	pcell->custom_data[pe_index] = pe;
-	pcell->custom_data[pf_index] = 1 - pcell->custom_data[pi_index] - pcell->custom_data[pe_index];
 
 	// update trans rate according to pf
 	int neg_index = phenotype.cycle.model().find_phase_index( PhysiCell_constants::Ki67_negative );
