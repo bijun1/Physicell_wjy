@@ -264,8 +264,8 @@ void change_for_ini_cell(Cell* pNew) {
 	int pi_index = pNew->custom_data.find_variable_index("pi");
 	int pe_index = pNew->custom_data.find_variable_index("pe");
 	int pf_index = pNew->custom_data.find_variable_index("pf");
-	double pi = parameters.doubles("pi_ini") * (1 + 0.5 * NormalRandom(0, 1)); 
-	double pe = parameters.doubles("pe_ini") * (1 + 0.5 * NormalRandom(0, 1)); 
+	double pi = parameters.doubles("pi_ini") * (1 + 0 * NormalRandom(0, 1)); 
+	double pe = parameters.doubles("pe_ini") * (1 + 0 * NormalRandom(0, 1)); 
 
 	if (pi > 1) {
 		pi = 1 - fabs(NormalRandom(0, 1) / 100);

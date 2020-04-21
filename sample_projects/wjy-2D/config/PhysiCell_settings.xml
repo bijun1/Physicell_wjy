@@ -87,7 +87,7 @@
 	</domain>
 	
 	<overall>
-		<max_time units="min">7200</max_time> <!-- 5 days * 24 h * 60 min -->
+		<max_time units="min">14400</max_time> <!-- 5 days * 24 h * 60 min -->
 		<time_units>min</time_units>
 		<space_units>micron</space_units>
 	
@@ -153,8 +153,8 @@
 		<motile_cell_apoptosis_rate type="double" units="1/min">0.0</motile_cell_apoptosis_rate> 
 		<motile_cell_relative_cycle_entry_rate type="double" units="dimensionless">0.1</motile_cell_relative_cycle_entry_rate>
 		<!-- WJY defined -->
-		<sample_num type="int" units="dimensionless">100</sample_num>
-		<radius type="int" units="dimensionless">100</radius>
+		<sample_num type="int" units="dimensionless">10</sample_num>
+		<radius type="int" units="dimensionless">20</radius>
 		<pi_ini type="double" units="dimensionless">0.4</pi_ini>
 		<pe_ini type="double" units="dimensionless">0.4</pe_ini>
 		<pf_ini type="double" units="dimensionless">0.2</pf_ini>
@@ -164,11 +164,11 @@
 		<wjy_rengp type="double" units="dimensionless">0.6</wjy_rengp>
 		<wjy_rengpp type="double" units="dimensionless">-0.8</wjy_rengpp>
 		<wjy_rengpf type="double" units="dimensionless">-0.2</wjy_rengpf>
-		<wjy_gmi type="double" units="dimensionless">2</wjy_gmi>
-		<wjy_gme type="double" units="dimensionless">2</wjy_gme>
-		<wjy_rea type="double" units="dimensionless">1</wjy_rea>
-		<wjy_ria type="double" units="dimensionless">1</wjy_ria>
-		<wjy_energy type="double" units="dimensionless">0.15</wjy_energy>
+		<wjy_gmi type="double" units="dimensionless">30</wjy_gmi>
+		<wjy_gme type="double" units="dimensionless">30</wjy_gme>
+		<wjy_rea type="double" units="dimensionless">0.1</wjy_rea>
+		<wjy_ria type="double" units="dimensionless">0.1</wjy_ria>
+		<wjy_energy type="double" units="dimensionless">1</wjy_energy>
 	</user_parameters>
 	
 </PhysiCell_settings>

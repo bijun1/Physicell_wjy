@@ -409,25 +409,25 @@ Cell* Cell::divide( )
 
 	double pi = custom_data[pi_index];
 	double pe = custom_data[pe_index];
-        double pi_copy_inre = 1.1;
-        double pe_copy_inre = 1.1;
+        double pi_copy_inre = 1.0;
+        double pe_copy_inre = 1.0;
         pi *= pi_copy_inre;
         pe *= pe_copy_inre;
-	if (pi > 1) {
-		pi = 1 - fabs(NormalRandom(0, 1) / 100);
+	if (pi > 0.95) {
+		pi = 0.95*(1 - fabs(NormalRandom(0, 1) / 10));
 	}
-	if (pe > 1) {
-		pe = 1 - fabs(NormalRandom(0, 1) / 100);
+	if (pe > 0.95) {
+		pe = 0.95*(1 - fabs(NormalRandom(0, 1) / 10));
 	}
-	if (pi < 0) {
-		pi = fabs(NormalRandom(0, 1) / 100);
+	if (pi < 0.1) {
+		pi = 0.1*(1+fabs(NormalRandom(0, 1) / 10));
 	}
-	if (pe < 0) {
-		pe = fabs(NormalRandom(0, 1) / 100);
+	if (pe < 0.1) {
+		pe =0.1*(1+ fabs(NormalRandom(0, 1) / 10));
 	}
-	if (pi + pe > 1) {
-		double pi_new = pi / (pi + pe + fabs(NormalRandom(0, 1) / 100));
-		double pe_new = pe / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+	if (pi + pe > 0.9) {
+		double pi_new = pi / (pi + pe)*0.9*(1- fabs(NormalRandom(0, 1) / 10));
+		double pe_new = pe *pi_new/pi;
 		pi = pi_new;
 		pe = pe_new;
 	}
