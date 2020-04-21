@@ -92,7 +92,8 @@ void create_cell_types( void )
 	
 	// set default cell cycle model 
 
-	cell_defaults.functions.cycle_model = flow_cytometry_separated_cycle_model; 
+	//cell_defaults.functions.cycle_model = flow_cytometry_separated_cycle_model; 
+	cell_defaults.functions.cycle_model = Ki67_advanced; 
 	
 	// set default_cell_functions; 
 	
@@ -118,8 +119,6 @@ void create_cell_types( void )
 	int necrosis_model_index = cell_defaults.phenotype.death.find_death_model_index( "Necrosis" );
 	int oxygen_substrate_index = microenvironment.find_density_index( "oxygen" ); 
 
-	int G0G1_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::G0G1_phase );
-	int S_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::S_phase );
 
 	// initially no necrosis 
 	cell_defaults.phenotype.death.rates[necrosis_model_index] = 0.0; 
@@ -133,7 +132,7 @@ void create_cell_types( void )
 	cell_defaults.custom_data.add_variable("pi", "dimensionless", parameters.doubles("pi_ini"));
 	cell_defaults.custom_data.add_variable("pe", "dimensionless", parameters.doubles("pe_ini"));
 	cell_defaults.custom_data.add_variable("pf", "dimensionless", parameters.doubles("pf_ini"));
-	
+
 	cell_defaults.custom_data.add_variable("pi_ini", "dimensionless", parameters.doubles("pi_ini"));
 	cell_defaults.custom_data.add_variable("pe_ini", "dimensionless", parameters.doubles("pe_ini"));
 
@@ -261,6 +260,38 @@ class cord {
 	cord(int i, int j, int k) : x(i), y(j), z(k){}
 };
 
+void change_for_ini_cell(Cell* pNew) {
+	// change pi pe.
+	int pi_index = pNew->custom_data.find_variable_index("pi");
+	int pe_index = pNew->custom_data.find_variable_index("pe");
+	int pf_index = pNew->custom_data.find_variable_index("pf");
+	double pi = parameters.doubles("pi_ini") * (1 + 0.5 * NormalRandom(0, 1)); 
+	double pe = parameters.doubles("pe_ini") * (1 + 0.5 * NormalRandom(0, 1)); 
+
+	if (pi > 1) {
+		pi = 1 - fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pe > 1) {
+		pe = 1 - fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi < 0) {
+		pi = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pe < 0) {
+		pe = fabs(NormalRandom(0, 1) / 100);
+	}
+	if (pi + pe > 1) {
+		double pi_new = pi / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		double pe_new = pe / (pi + pe + fabs(NormalRandom(0, 1) / 100));
+		pi = pi_new;
+		pe = pe_new;
+	}
+
+	pNew->custom_data[pi_index] = pi;
+	pNew->custom_data[pe_index] = pe;
+	pNew->custom_data[pf_index] = 1 - pNew->custom_data[pi_index] - pNew->custom_data[pe_index];
+}
+
 void setup_tissue( void )
 {
 	// create some cells near the origin
@@ -283,6 +314,7 @@ void setup_tissue( void )
 		cord c = T[id];
 		if (c.x * c.x + c.y * c.y  + c.z * c.z> radius * radius * radius) { continue; }
 		pC = create_cell(); 
+		change_for_ini_cell(pC);
 		pC->assign_position( (double) c.x, (double) c.y, (double) c.z );
 		count++;
 		if (count > sample_num) { break; }

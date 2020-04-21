@@ -97,7 +97,6 @@ void create_cell_types( void )
 	
 	// set default_cell_functions; 
 	
-	// cell_defaults.functions.update_phenotype = update_cell_and_death_parameters_O2_based; 
 	cell_defaults.functions.update_phenotype = wjy_update; 
 	
 	// needed for a 2-D simulation: 
@@ -120,10 +119,6 @@ void create_cell_types( void )
 	int necrosis_model_index = cell_defaults.phenotype.death.find_death_model_index( "Necrosis" );
 	int oxygen_substrate_index = microenvironment.find_density_index( "oxygen" ); 
 
-	//int G0G1_index = flow_cytometry_separated_cycle_model.find_phase_index( PhysiCell_constants::G0G1_phase );
-	int ppre_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_positive_premitotic );
-	int ppos_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_positive_postmitotic );
-	int neg_index = Ki67_advanced.find_phase_index( PhysiCell_constants::Ki67_negative );
 
 	// initially no necrosis 
 	cell_defaults.phenotype.death.rates[necrosis_model_index] = 0.0; 
